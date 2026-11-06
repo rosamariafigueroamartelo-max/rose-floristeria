@@ -1,0 +1,31 @@
+### Rose Floristería · Pruebas de los 5 endpoints
+### (extensión REST Client de VS Code o cliente HTTP de JetBrains)
+@base = http://127.0.0.1:8000
+
+### 1. Categorías con promedio por línea superior a la media global
+GET {{base}}/api/reportes/clasificacion-top
+Accept: application/json
+
+### 2. Clientes con gasto acumulado superior al promedio
+GET {{base}}/api/analitica/actores-estrella
+Accept: application/json
+
+### 3. Productos vendidos por debajo del promedio de su categoría
+GET {{base}}/api/items/desviacion-grupo
+Accept: application/json
+
+### 4. Ventas por administrador excluyendo clientes con pedidos cancelados
+GET {{base}}/api/segmentos/analisis-limpio
+Accept: application/json
+
+### 5a. Resumen por estado del pedido con valor por defecto (min_operaciones = 2)
+GET {{base}}/api/operaciones/resumen-dinamico
+Accept: application/json
+
+### 5b. min_operaciones = 10  (200: Entregado, Pendiente y En preparacion)
+GET {{base}}/api/operaciones/resumen-dinamico?min_operaciones=10
+Accept: application/json
+
+### 5c. min_operaciones = 100  (esperado: 404 sin registros)
+GET {{base}}/api/operaciones/resumen-dinamico?min_operaciones=100
+Accept: application/json

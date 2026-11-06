@@ -1,0 +1,201 @@
+{
+  "info": {
+    "name": "Rose Floristería · API de Analítica",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "5 endpoints analíticos (FastAPI + SQL nativo) sobre la base rose_floristeria"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Clasificación top (categorías)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/reportes/clasificacion-top",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "reportes",
+            "clasificacion-top"
+          ]
+        },
+        "description": "GROUP BY categoría + subconsulta escalar en HAVING"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+              "pm.test('Trae datos', () => pm.expect(pm.response.json().datos.length).to.be.above(0));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Actores estrella (clientes)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/analitica/actores-estrella",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "analitica",
+            "actores-estrella"
+          ]
+        },
+        "description": "GROUP BY cliente + tabla derivada en FROM y en HAVING"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+              "pm.test('Trae datos', () => pm.expect(pm.response.json().datos.length).to.be.above(0));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Desviación de grupo (productos)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/items/desviacion-grupo",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "items",
+            "desviacion-grupo"
+          ]
+        },
+        "description": "GROUP BY producto + subconsulta correlacionada en HAVING"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+              "pm.test('Trae datos', () => pm.expect(pm.response.json().datos.length).to.be.above(0));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Análisis limpio (administradores)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/segmentos/analisis-limpio",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "segmentos",
+            "analisis-limpio"
+          ]
+        },
+        "description": "GROUP BY administrador + NOT EXISTS en WHERE"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+              "pm.test('Trae datos', () => pm.expect(pm.response.json().datos.length).to.be.above(0));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Resumen dinámico (estado del pedido)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/operaciones/resumen-dinamico?min_operaciones=2",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "operaciones",
+            "resumen-dinamico"
+          ],
+          "query": [
+            {
+              "key": "min_operaciones",
+              "value": "2"
+            }
+          ]
+        },
+        "description": "GROUP BY estado + HAVING COUNT >= %s + subconsulta MIN"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+              "pm.test('Trae datos', () => pm.expect(pm.response.json().datos.length).to.be.above(0));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
